@@ -1,0 +1,68 @@
+ROOT_DIR=.
+
+ADDPACKPSG_SUBFOLDER=Release_Express
+
+PATH_ADDPACKPSG1=$(ROOT_DIR)/IPSGSolverHelper
+PATH_ADDPACKPSG2=$(ROOT_DIR)/PSGSolver
+PATH_ADDPACKPSG3=$(ROOT_DIR)/RPSGSolverHelper
+PATH_ADDPACKPSG4=$(ROOT_DIR)/PSGShellObjects
+PATH_ADDPACKPSG5=$(ROOT_DIR)/MILP
+PATH_ADDPACKPSG6=$(ROOT_DIR)/VK_Solver_MDB
+
+PATH_ADDLIBPSG1=$(PATH_ADDPACKPSG1)/$(ADDPACKPSG_SUBFOLDER)
+PATH_ADDLIBPSG2=$(PATH_ADDPACKPSG2)/$(ADDPACKPSG_SUBFOLDER)
+PATH_ADDLIBPSG3=$(PATH_ADDPACKPSG3)/$(ADDPACKPSG_SUBFOLDER)
+PATH_ADDLIBPSG4=$(PATH_ADDPACKPSG4)/$(ADDPACKPSG_SUBFOLDER)
+PATH_ADDLIBPSG5=$(PATH_ADDPACKPSG5)/$(ADDPACKPSG_SUBFOLDER)
+PATH_ADDLIBPSG6=$(PATH_ADDPACKPSG6)/$(ADDPACKPSG_SUBFOLDER)
+
+ADDLIBPSG_PATH = -L"$(PATH_ADDLIBPSG1)" -L"$(PATH_ADDLIBPSG2)" -L"$(PATH_ADDLIBPSG3)" -L"$(PATH_ADDLIBPSG4)" -L"$(PATH_ADDLIBPSG5)" -L"$(PATH_ADDLIBPSG6)"
+
+$(info WINDOWS platform)
+$(info The compilation root directory is: $(ROOT_DIR))
+$(info The name of shared library to be created is: $(SHLIB))
+
+PKG_CXXFLAGS=-DWIN32 -DPSG_EXPRESS -fpic -I"$(PATH_ADDPACKPSG1)/src" -I"$(PATH_ADDPACKPSG3)/src" -I"$(PATH_ADDPACKPSG4)/src"
+
+ADD_FFLAGS=-fcray-pointer -fno-underscoring -fdollar-ok \
+    -fd-lines-as-comments -ffixed-line-length-132 -fdefault-double-8 -fdefault-real-8 -cpp	
+
+CXXARCHFLAGS= -DWIN32
+	
+all: $(SHLIB)
+$(SHLIB): $(PATH_ADDLIBPSG1)/libIPSGSolverHelper_Express.a $(PATH_ADDLIBPSG2)/libPSGSolver_Express.a $(PATH_ADDLIBPSG3)/libRPSGSolverHelper_Express.a $(PATH_ADDLIBPSG4)/libPSGShellObjects_Express.a $(PATH_ADDLIBPSG5)/libMILP_Express.a $(PATH_ADDLIBPSG6)/libVK_Solver_MDB_Express.a
+$(PATH_ADDLIBPSG1)/libIPSGSolverHelper_Express.a:
+	(cd "$(PATH_ADDLIBPSG1)" && $(MAKE) all \
+AR="$(AR)" RM="$(RM)" CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)")
+$(PATH_ADDLIBPSG2)/libPSGSolver_Express.a:
+	(cd "$(PATH_ADDLIBPSG2)" && $(MAKE) all \
+AR="$(AR)" RM="$(RM)" CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)")
+$(PATH_ADDLIBPSG3)/libRPSGSolverHelper_Express.a:
+	(cd "$(PATH_ADDLIBPSG3)" && $(MAKE) all \
+AR="$(AR)" RM="$(RM)" CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)")
+$(PATH_ADDLIBPSG4)/libPSGShellObjects_Express.a:
+	(cd "$(PATH_ADDLIBPSG4)" && $(MAKE) all \
+AR="$(AR)" RM="$(RM)" CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)")
+$(PATH_ADDLIBPSG5)/libMILP_Express.a:
+	(cd "$(PATH_ADDLIBPSG5)" && $(MAKE) all \
+FC="$(FC)" AR="$(AR)" RM="$(RM)" FPICFLAGS="$(FPICFLAGS)" FFLAGS="$(FFLAGS)" ADD_FFLAGS="$(ADD_FFLAGS)")
+$(PATH_ADDLIBPSG6)/libVK_Solver_MDB_Express.a:
+	(cd "$(PATH_ADDLIBPSG6)" && $(MAKE) all \
+FC="$(FC)" AR="$(AR)" RM="$(RM)" FPICFLAGS="$(FPICFLAGS)" FFLAGS="$(FFLAGS)" ADD_FFLAGS="$(ADD_FFLAGS)")
+
+LIBPSG1 = -lRPSGSolverHelper_Express -lIPSGSolverHelper_Express -lPSGSolver_Express -lPSGShellObjects_Express -lVK_Solver_MDB_Express -lMILP_Express $(FLIBS)
+
+PKG_LIBS = $(ADDLIBPSG_PATH) $(LIBPSG1)
+
+all: libsclean $(SHLIB)
+libsclean:
+	(cd "$(PATH_ADDLIBPSG1)" && $(MAKE) clean)
+	(cd "$(PATH_ADDLIBPSG2)" && $(MAKE) clean)
+	(cd "$(PATH_ADDLIBPSG3)" && $(MAKE) clean)
+	(cd "$(PATH_ADDLIBPSG4)" && $(MAKE) clean)
+	(cd "$(PATH_ADDLIBPSG5)" && $(MAKE) clean)
+	(cd "$(PATH_ADDLIBPSG6)" && $(MAKE) clean)
+.PHONY: all clean
+
+
+
