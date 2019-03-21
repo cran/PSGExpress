@@ -36,13 +36,6 @@ class CImpl
 public:
 	static volatile long m_nInstanceCount;
 	bool m_bIsInit;
-#ifdef WIN32
-	CRITICAL_SECTION m_cs;
-#elif LINUX
-	pthread_mutex_t m_cs = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
-#else
-#error Platform not supported
-#endif
 };
 
 volatile long CImpl::m_nInstanceCount = 0;
@@ -51,42 +44,10 @@ IPSGSolverHelper::IPSGSolverHelper(void)
 {
 	m_pImpl = new CImpl;
 	m_pImpl->m_bIsInit = false;
-#ifdef WIN32
-	InitializeCriticalSection(&(m_pImpl->m_cs));
-#endif
 }
 
 IPSGSolverHelper::~IPSGSolverHelper(void)
 {
-#ifdef WIN32
-	EnterCriticalSection(&(m_pImpl->m_cs));
-#elif LINUX
-	pthread_mutex_lock(&(m_pImpl->m_cs));
-#else
-#error Platform not supported
-#endif
-	if(m_pImpl->m_nInstanceCount > 0 && !m_pImpl->m_bIsInit)
-	{
-#ifdef WIN32
-		LeaveCriticalSection(&(m_pImpl->m_cs));
-#elif LINUX
-		pthread_mutex_unlock(&(m_pImpl->m_cs));
-#else
-#error Platform not supported
-#endif
-		if(m_pImpl) {
-			delete m_pImpl;
-			m_pImpl = NULL;
-		}
-	}
-#ifdef WIN32
-	LeaveCriticalSection(&(m_pImpl->m_cs));
-	DeleteCriticalSection(&(m_pImpl->m_cs));
-#elif LINUX
-	pthread_mutex_unlock(&(m_pImpl->m_cs));
-#else
-#error Platform not supported
-#endif
 	if(m_pImpl) {
 		delete m_pImpl;
 		m_pImpl = NULL;
@@ -100,75 +61,18 @@ bool IPSGSolverHelper::IsInit(void)
 
 int IPSGSolverHelper::Init(void)
 {
-	if(m_pImpl->m_bIsInit)
-		return -1;
-#ifdef WIN32
-	EnterCriticalSection(&(m_pImpl->m_cs));
-#elif LINUX
-	pthread_mutex_lock(&(m_pImpl->m_cs));
-#else
-#error Platform not supported
-#endif
-	if(!m_pImpl->m_bIsInit)
-	{
-		m_pImpl->m_bIsInit = true;
-		++(m_pImpl->m_nInstanceCount);
-	}
-	else
-	{
-#ifdef WIN32
-		LeaveCriticalSection(&(m_pImpl->m_cs));
-#elif LINUX
-		pthread_mutex_unlock(&(m_pImpl->m_cs));
-#else
-#error Platform not supported
-#endif
-	}
-	int ret = m_pImpl->m_nInstanceCount;
-#ifdef WIN32
-	LeaveCriticalSection(&(m_pImpl->m_cs));
-#elif LINUX
-	pthread_mutex_unlock(&(m_pImpl->m_cs));
-#else
-#error Platform not supported
-#endif
-	return ret;
+	if(m_pImpl->m_bIsInit) return -1;
+	m_pImpl->m_bIsInit = true;
+	++(m_pImpl->m_nInstanceCount);
+	return m_pImpl->m_nInstanceCount;
 }
 
 void IPSGSolverHelper::End()
 {
-#ifdef WIN32
-	EnterCriticalSection(&(m_pImpl->m_cs));
-#elif LINUX
-	pthread_mutex_lock(&(m_pImpl->m_cs));
-#else
-#error Platform not supported
-#endif
-	if(!m_pImpl->m_bIsInit)
-	{
-		if(m_pImpl->m_nInstanceCount > 0)
-		{
-#ifdef WIN32
-			LeaveCriticalSection(&(m_pImpl->m_cs));
-#elif LINUX
-			pthread_mutex_unlock(&(m_pImpl->m_cs));
-#else
-#error Platform not supported
-#endif
-		}
-	}
-	else
-	{
+	if(m_pImpl->m_bIsInit) {
 		--(m_pImpl->m_nInstanceCount);
 		m_pImpl->m_bIsInit = false;
 	}
-#ifdef WIN32
-	LeaveCriticalSection(&(m_pImpl->m_cs));
-#elif LINUX
-	pthread_mutex_unlock(&(m_pImpl->m_cs));
-#else
-#error Platform not supported
-#endif
 }
 
 string toLower(const string& str)

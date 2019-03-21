@@ -1,5 +1,5 @@
 Package: PSGExpress
-Version: 3.1
+Version: 3.1.1
 Title: Portfolio Safeguard: Optimization, Statistics and Risk
         Management
 Authors@R: c(person("Stan", "Uryasev", role=c("aut", "cre","cph"), email = "stan.uryasev@aorda.com"), 
@@ -17,6 +17,6 @@ License: GPL (>= 2)
 URL: http://www.aorda.com
 Imports: methods
 NeedsCompilation: yes
-Packaged: 2019-03-14 14:07:51 UTC; a123
+Packaged: 2019-03-21 10:54:21 UTC; a123
 Repository: CRAN
-Date/Publication: 2019-03-16 20:23:31 UTC
+Date/Publication: 2019-03-21 12:23:32 UTC

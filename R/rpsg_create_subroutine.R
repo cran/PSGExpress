@@ -63,7 +63,7 @@ ps_text[[length(ps_text)+1]] <- "}"
 
 endtext<-vector(length = 3)
   endtext[[1]] <-"#========================================================"
-  endtext[[2]] <-"#This function was created by rpsg_create_subroutine"
+  endtext[[2]] <-"#This function was created by rpsg_create_subroutine."
   endtext[[3]] <-"#========================================================"
 
 ps_text <-c(ps_text,endtext)

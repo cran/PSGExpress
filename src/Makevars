@@ -55,7 +55,7 @@ LIBPSG1 = -Bstatic -lRPSGSolverHelper_Express -lIPSGSolverHelper_Express -lPSGSo
 
 PKG_LIBS = $(ADDLIBPSG_PATH) $(LIBPSG1)
 
-all: libsclean $(SHLIB)
+all: libsclean
 libsclean:
 	(cd $(PATH_ADDLIBPSG1); $(MAKE) clean)
 	(cd $(PATH_ADDLIBPSG2); $(MAKE) clean)
@@ -63,7 +63,6 @@ libsclean:
 	(cd $(PATH_ADDLIBPSG4); $(MAKE) clean)
 	(cd $(PATH_ADDLIBPSG5); $(MAKE) clean)
 	(cd $(PATH_ADDLIBPSG6); $(MAKE) clean)
-.PHONY: all clean
 
 
 
