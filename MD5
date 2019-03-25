@@ -1,4 +1,4 @@
-25ce803eebc057d1809fbe417fe5043e *DESCRIPTION
+710e4c75f9fd7802f46eddd464a8fced *DESCRIPTION
 334b7615b9a2fe40bc13aeb1f470cb43 *NAMESPACE
 45585cf510678751b83b40a6decfe6de *R/rpsg_create_subroutine.R
 9e12a0b1c6e287dbb076e373b8b0908d *R/rpsg_exporttotext.R
@@ -13,7 +13,7 @@ b54a223148562f9775da5caa59e97ba1 *R/rpsg_riskprog.R
 4f02127d43c3e424437e6587d68fd8e2 *R/rpsg_riskratioprog.R
 19529b638a0f45686f336583df9dfb50 *R/rpsg_solver.R
 c5b708f653a4e30343126df5cd41637c *R/rpsg_verify.R
-56cdf6859264c93c323ca78d401afa78 *build/partial.rdb
+14e0dd7545b9e6b521a48e450bb7106f *build/partial.rdb
 948dd71c8b879462f83971886fc2bc13 *man/PSG_R_Setup_linux64-package.Rd
 fa793a0543c41af732db7155585c8ab3 *man/check.functions.ratioprog.Rd
 30ab8af989411deb1896cff303193c89 *man/rpsg_convert_ps_params.Rd
@@ -60,7 +60,7 @@ eaf75472325c13f821e764e78bada6df *src/MILP/src/Mb42a_VK.for
 5328ac9c0816ea30453f68efb2357af6 *src/MILP/src/mb0b.for
 e0cd1206980e7914c19a786b7babbac3 *src/MILP/src/mifcomx.inc
 e49b3ac4968620214b817e6ca288204d *src/MILP/src/mifdp.inc
-b5a8c1ee226018411a59126dd6fa3bf4 *src/Makevars
+2bd15ddf2220baf256972b9791768e14 *src/Makevars
 8293c4e358bce2eebde41703f214c049 *src/Makevars.win
 cdd6eef0fa94b6957d805209bfd02645 *src/PSGShellObjects/Release_Express/makefile
 10e8362af1c6ee4f333df1cc4ebea05c *src/PSGShellObjects/Release_Express/src/subdir.mk
