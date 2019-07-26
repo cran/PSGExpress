@@ -1722,7 +1722,8 @@ int64_t CPSGS_Data_Object::m_get_nnz(void)
 	switch (m_object_type) {
 		case PSGS_DATAOBJUNKNOWN: res = -1; break;
 		case PSGS_MATRIX:
-			res = (int)ceil((int)m_size_arr[1]/11)+m_size_arr[1];
+			res = m_size_arr[1]%13;
+//			res = (int)ceil((int)m_size_arr[1]/11)+m_size_arr[1];
 			res = m_size_arr[0]*res;
 //			res = m_size_arr[0]*m_size_arr[1];
 			break;

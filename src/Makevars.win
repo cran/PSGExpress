@@ -1,5 +1,7 @@
 ROOT_DIR=.
 
+#MAKEFLAGS = -j
+
 ADDPACKPSG_SUBFOLDER=Release_Express
 
 PATH_ADDPACKPSG1=$(ROOT_DIR)/IPSGSolverHelper
@@ -24,12 +26,12 @@ $(info The name of shared library to be created is: $(SHLIB))
 
 PKG_CXXFLAGS=-DWIN32 -DPSG_EXPRESS -fpic -I"$(PATH_ADDPACKPSG1)/src" -I"$(PATH_ADDPACKPSG3)/src" -I"$(PATH_ADDPACKPSG4)/src"
 
-ADD_FFLAGS=-fcray-pointer -fno-underscoring -fdollar-ok \
-    -fd-lines-as-comments -ffixed-line-length-132 -fdefault-double-8 -fdefault-real-8 -cpp	
+ADD_FFLAGS=-std=legacy -fcray-pointer -fno-underscoring -fdollar-ok \
+    -fd-lines-as-comments -ffixed-line-length-132 -fdefault-double-8 -fdefault-real-8 -cpp
 
 CXXARCHFLAGS= -DWIN32
 	
-all: $(SHLIB)
+all: $(SHLIB) libsclean
 $(SHLIB): $(PATH_ADDLIBPSG1)/libIPSGSolverHelper_Express.a $(PATH_ADDLIBPSG2)/libPSGSolver_Express.a $(PATH_ADDLIBPSG3)/libRPSGSolverHelper_Express.a $(PATH_ADDLIBPSG4)/libPSGShellObjects_Express.a $(PATH_ADDLIBPSG5)/libMILP_Express.a $(PATH_ADDLIBPSG6)/libVK_Solver_MDB_Express.a
 $(PATH_ADDLIBPSG1)/libIPSGSolverHelper_Express.a:
 	(cd "$(PATH_ADDLIBPSG1)" && $(MAKE) all \
@@ -54,7 +56,7 @@ LIBPSG1 = -lRPSGSolverHelper_Express -lIPSGSolverHelper_Express -lPSGSolver_Expr
 
 PKG_LIBS = $(ADDLIBPSG_PATH) $(LIBPSG1)
 
-all: libsclean
+#all: libsclean
 libsclean:
 	(cd "$(PATH_ADDLIBPSG1)" && $(MAKE) clean)
 	(cd "$(PATH_ADDLIBPSG2)" && $(MAKE) clean)

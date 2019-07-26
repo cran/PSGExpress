@@ -73,7 +73,8 @@ Constraint: >= 4.5
  avg_g(matrix_scenarios)
 Constraint: == 1
  linear(matrix_budget)
-Box: >= point_lowerbounds")
+Box: >= point_lowerbounds
+Solver: CAR")
 
 # PSG Matrix:
 problem_list$matrix_scenarios <- matrix_scenarios

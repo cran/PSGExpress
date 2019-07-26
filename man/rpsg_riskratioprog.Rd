@@ -72,6 +72,7 @@ b, beq, lb, ub are vectors or scalars;\cr
 risk1(x), risk2(x)  functions are linear combinations of PSG risk functions, PSG deterministic functions, or PSG utility functions. \href{http://www.aorda.com/html/PSG_Help_HTML/index.html?riskratioprog.htm}{List of PSG functions for riskratioprog}
 }
 \examples{
+
 #Problem:
 #Find x = (x1,x2,x3,x4) maximizing
 #f(x) = Average Gain(x)/Partial Moment Penalty for Loss(x)
@@ -83,7 +84,7 @@ risk1(x), risk2(x)  functions are linear combinations of PSG risk functions, PSG
 
 input.model <- list()
 input.model$risk1 <- "pm_pen"
-input.model$w1 <- 0.01
+input.model$w1 <- -1
 input.model$risk2 <- "avg"
 H1 <- c(0.11, 0.04, -0.12, 0.01, -0.05,
        -0.01, -0.1, 0.03, 0.21, 0.01,

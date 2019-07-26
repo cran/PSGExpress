@@ -2514,7 +2514,7 @@ extern "C"  SEXP  crpsg_solver(SEXP regime, SEXP path, SEXP thisproblem, SEXP rh
 	// Data gotten! Solve the problem
 //	}
 	if ((this_rpsg_regime==RPSG_REGIME_SOLVE)||(this_rpsg_regime==RPSG_REGIME_VERIFY)) {
-		int sRet;
+		int sRet=0;
 		if (this_rpsg_regime==RPSG_REGIME_SOLVE) 
 			sRet = CRPSGSolverHelper::run_rpsg_solver(thisCRPSGSolverHelper);
 		else if (this_rpsg_regime==RPSG_REGIME_VERIFY) 

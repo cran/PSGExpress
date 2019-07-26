@@ -454,26 +454,13 @@ rpsg_riskratioprog <- function(model,stroptions = NULL)
       rpsg_exporttotext(stroptions$save.to.text, problem.list)
     }
   }
-
-  #save.to.list
-  #if (!is.null(stroptions$save.to.list))
-  #{
-  #  if (is.character(stroptions$save.to.list))
-  #  {
-  #    new.variable.name<-make.names(stroptions$save.to.list, unique = TRUE);
-  #    assign(new.variable.name,problem.list,envir = .GlobalEnv)
-  #  }
-  #  else stop("Wrong save.to.list option")
-  #}
-
-  #Report
-  #cat(problem_statement,"\n\n\n")
-
-  #return(problem.list)
-
+  
   problem.res <- rpsg_solver(problem.list)
-  #problem.res <- rpsg_solver(problem_statement)
-
+ 
+  resulted.list.new <- list()
+  
+  if (!is.null(problem.res) & is.list(problem.res)){
+   
   resulted.list<-rpsg_getsolution(problem.res)
 
   if (resulted.list$objective == 0){stop("Riskratioprog can not find optimal solution,because the problem is unbounded.")}
@@ -545,7 +532,6 @@ rpsg_riskratioprog <- function(model,stroptions = NULL)
   else fval <- 1e20
 
   # Create final report
-  resulted.list.new <- list()
   resulted.list.new$status <- resulted.list$status
   resulted.list.new$objective <- fval
 
@@ -587,23 +573,12 @@ rpsg_riskratioprog <- function(model,stroptions = NULL)
   resulted.list.new$loading.time <- resulted.list$loading.time
   resulted.list.new$preprocessing.time <- resulted.list$preprocessing.time
   resulted.list.new$solving.time <- resulted.list$solving.time
-
+}
   return(resulted.list.new)
+  
 }
 
-#' Checks if PSG function may be used in rpsg_riskratioprog as risk1 or risk2.
-#'
-#' @keywords internal
-#'
-#' @param character with name of PSG function
-#'
-#' @return list with results:
-#' \tabular{ll}{
-#' resultf$adm \tab TRUE if PSG function may be used and FALSE otherwise;\cr
-#' resultf$param \tab type of the parameter of PSG function: 0 = no parameter, 1 = threshold, 2 = user defined parameter;\cr
-#' resultf$num \tab TRUE if PSG function may be used and FALSE otherwise;\cr
-#' }
-
+# Checks if PSG function may be used in rpsg_riskratioprog as risk1 or risk2.
 
 check.functions.ratioprog <- function(function.text)
 {

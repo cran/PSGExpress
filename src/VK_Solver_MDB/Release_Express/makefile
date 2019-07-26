@@ -1,19 +1,29 @@
+
 -include src/subdir.mk
+
+getFlag:
+ifeq ($(OS), Windows_NT)
+	@$(eval DETOS="Windows_NT")
+else
+	@$(eval DETOS="$(shell uname)")
+endif
+	@echo 'detected_OS:' $(DETOS)
+ifeq ($(DETOS), "Darwin")
+	@$(eval ADD_MFLAG=-m64)
+else
+	@$(eval ADD_MFLAG=)
+endif
 
 # All Target
 all: libVK_Solver_MDB_Express.a
 
 # Tool invocations
-#libVK_Solver_MDB_Express.a: $(OBJS) $(USER_OBJS) #$(LIBS) # libMILP.a
-libVK_Solver_MDB_Express.a: $(OBJS)
+libVK_Solver_MDB_Express.a: getFlag $(OBJS)
 	@echo 'Building target: $@'
-#	@echo 'Invoking: GCC Linker'
 	$(AR) -cr  "libVK_Solver_MDB_Express.a" $(OBJS)
-#	ar -cr  "libVK_Solver_MDB_Express.a" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-    
 
 # Other Targets
 clean:

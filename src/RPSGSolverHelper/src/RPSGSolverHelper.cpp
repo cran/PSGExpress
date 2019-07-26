@@ -7,7 +7,7 @@
 #ifdef WIN32
 #include <windows.h>
 #elif LINUX
-#include <link.h>
+//#include <link.h>
 #include <termios.h>
 #include <sys/ioctl.h>
 #else
@@ -1148,7 +1148,8 @@ bool CRPSGSolverHelper::GetMatrixData( const char* lpszMatrixName, double*& pDat
 		OnError(0xFFF1, errorobjname.c_str(), "There is not enough memory to load matrix");
 		return false;
 	}
-	int x_num = (int)ceil(cols/12)+cols;
+	int x_num = cols%12;
+//	int x_num = (int)ceil(cols/12)+cols;
 	double* this_data = this_matrix->m_get_data();
 	for (int64_t i=0; i<rows * x_num; i++) {
 		*(pData++) = *(this_data++);
@@ -1338,7 +1339,8 @@ bool CRPSGSolverHelper::SaveMatrix(const char* szMatrixName, char szVarsName[][m
 		OnError(0xFFF1, "Matrix", errMsg.c_str());
 		return false;
 	}
-	int t_num = (int)ceil(numcol/11)+numcol;
+	int t_num = numcol%11;
+//	int t_num = (int)ceil(numcol/11)+numcol;
 	if (this_curr_problem->m_isin_output_data_collection(string(szMatrixName))) {
 		string errMsg("Matrix ");
 		errMsg += string(szMatrixName);

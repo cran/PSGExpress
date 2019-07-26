@@ -1,24 +1,48 @@
 rpsg_getsolution <- function(problem.res)
 {
-  key_many_output = FALSE
   solution.list <- list()
-  #problem.report<-problem.res$output
-  if (is.null(problem.res$output)) {
-    if (is.null(problem.res[[1]]$output)){
+  
+  if (!is.list(problem.res)){
+    stop("Wrong PSG solution")
+  }
+  
+  key_many_output = FALSE
+  
+  if (is.null(names(problem.res))){
+    if (!is.null(names(problem.res[[1]]))){
+    key_many_output = TRUE
+    } else {
+      stop("Wrong PSG solution")
+    }
+    
+  }
+  
+  if (!key_many_output) {
+    if (is.null(problem.res)){
       stop("PSG solution is NULL")
     }
-    else key_many_output = TRUE
+    if (is.null(problem.res$output)){
+      stop("PSG solution does not include output")
+    } else{
+    solution.list <- rpsg_getsolution_one_problem(problem.res)
+    }
   }
-
-if (key_many_output){
-  for (i in 1:length(problem.res)){
-    solution.list[[i]] <- rpsg_getsolution_one_problem(problem.res[[i]])
+    
+  if (key_many_output) {
+    for (i in 1:length(problem.res)){
+      problem.res.loc <- problem.res[[i]]
+    if (is.null(problem.res.loc)){
+      stop("PSG solution is NULL")
+    }
+    if (is.null(problem.res.loc$output)){
+      stop("PSG solution does not include output")
+    } else{
+    solution.list[[i]] <- rpsg_getsolution_one_problem(problem.res.loc)
+    }
+    }
   }
-}
-else solution.list <- rpsg_getsolution_one_problem(problem.res)
-
   return(solution.list)
-
+  
 }
 
 
@@ -37,7 +61,6 @@ rpsg_getsolution_one_problem <- function(problem.res)
 
   #solution.status
   solution.status<-NULL
-  #loc1<-match("solution_status",elem.list)
   loc1<-which(elem.list %in% "solution_status")
   if (length(loc1)==0) stop("Input is not a PSG solution report")
 
@@ -83,13 +106,10 @@ rpsg_getsolution_one_problem <- function(problem.res)
     while (elem.list[loc1[i]+j]!="=") {j<-j+1}
     solving.time<-c(solving.time,as.numeric(elem.list[loc1[i]+j+1]))
   }
-  #if (elem.list[loc1+1]=="=") {solving.time<-as.numeric(elem.list[loc1+2])}
-  #else solving.time<-"undefined"
   solution.list$solving.time<-solving.time
 
   #objective
   solution.objective<-NULL
-  #loc1<-match("objective:",elem.list)
   loc1<-which(elem.list %in% "objective:")
 
   for (i in 1:length(loc1)){
@@ -119,7 +139,6 @@ rpsg_getsolution_one_problem <- function(problem.res)
   for (i in 1:length(loc1)){
     j<-1
     while (elem.list[loc1[i]+j]!="=") {j<-j+1}
-    #if (grepl("[-]?[0-9]+[.]?[0-9]*|[-]?[0-9]+[L]?|[-]?[0-9]+[.]?[0-9]*[eE][0-9]+",elem.list[loc1[i]+j+1])){
     if (is.na(pmatch("vector",elem.list[loc1[i]+j+1])) && is.na(pmatch("point",elem.list[loc1[i]+j+1])) && is.na(pmatch("matrix",elem.list[loc1[i]+j+1]))){
       solution.function.value<-c(solution.function.value,as.numeric(elem.list[loc1[i]+j+1]))
       solution.function.names<-c(solution.function.names,paste(elem.list[(loc1[i]+1):(loc1[i]+j-1)],collapse = ", "))
